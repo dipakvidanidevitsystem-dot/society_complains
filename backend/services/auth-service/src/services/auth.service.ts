@@ -85,6 +85,12 @@ export class AuthService {
     return toPublicUser(user);
   }
 
+  async updateProfile(userId: number, input: { fullName: string; mobile: string; flatNumber: string }) {
+    const user = await this.users.updateProfile(userId, input);
+    if (!user) throw new AppError(404, "We could not find your account.");
+    return { user: toPublicUser(user), accessToken: this.signAccess(user) };
+  }
+
   async updateAvatar(userId: number, file?: Buffer) {
     if (!file) throw new AppError(400, "Please choose a photo to upload.", { avatar: "Choose a photo first." });
     const url = await uploadImage(file, "avatars");
@@ -92,8 +98,12 @@ export class AuthService {
     return toPublicUser(user!);
   }
 
+  private signAccess(user: User) {
+    return jwt.sign({ sub: String(user.id), role: user.role, name: user.fullName, flat: user.flatNumber }, env.accessJwtSecret, { expiresIn: "15m" });
+  }
+
   private async issueTokens(user: User) {
-    const accessToken = jwt.sign({ sub: String(user.id), role: user.role, name: user.fullName, flat: user.flatNumber }, env.accessJwtSecret, { expiresIn: "15m" });
+    const accessToken = this.signAccess(user);
     const refreshToken = jwt.sign({ sub: String(user.id), jti: crypto.randomUUID() }, env.refreshJwtSecret, { expiresIn: "7d" });
     await this.tokens.save(user.id, hashToken(refreshToken), dayjs().add(REFRESH_TTL_MS, "millisecond").toDate());
     return { accessToken, refreshToken };

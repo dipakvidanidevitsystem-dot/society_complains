@@ -1,7 +1,7 @@
 import { CookieOptions, NextFunction, Request, Response } from "express";
 import { AuthService, ACCESS_TTL_MS, REFRESH_TTL_MS } from "../services/auth.service.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
-import { loginSchema, registerSchema } from "../utils/validation.js";
+import { loginSchema, profileSchema, registerSchema } from "../utils/validation.js";
 
 const base: CookieOptions = { httpOnly: true, sameSite: "strict", secure: process.env.NODE_ENV === "production" };
 
@@ -59,6 +59,17 @@ export class AuthController {
     try {
       const user = await this.service.me(req.caller!.userId!);
       ApiResponse.success(res, "Your profile is ready.", user);
+    } catch (e) {
+      next(e);
+    }
+  };
+
+  updateProfile = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const input = profileSchema.parse(req.body);
+      const { user, accessToken } = await this.service.updateProfile(req.caller!.userId!, input);
+      res.cookie("access_token", accessToken, { ...base, path: "/", maxAge: ACCESS_TTL_MS });
+      ApiResponse.success(res, "Your details have been updated.", user);
     } catch (e) {
       next(e);
     }

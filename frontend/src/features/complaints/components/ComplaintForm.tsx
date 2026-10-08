@@ -62,6 +62,8 @@ export default function ComplaintForm({ onDone, onCancel }: ComplaintFormProps) 
 
   return (
     <form noValidate onSubmit={handleSubmit(submit)} className="flex flex-col gap-4">
+      <div className="grid gap-4 md:grid-cols-2 md:gap-6">
+        <div className="flex flex-col gap-4">
       <TextField label="Title" placeholder="Water leaking from the ceiling" maxLength={LIMITS.title} filter={filters.title} error={errors.title?.message} {...register("title")} />
       <TextAreaField
         label="What happened?"
@@ -70,9 +72,12 @@ export default function ComplaintForm({ onDone, onCancel }: ComplaintFormProps) 
         filter={filters.text}
         hint={`${descLength}/${LIMITS.description}`}
         error={errors.description?.message}
+        rows={6}
         {...register("description")}
       />
-      <div className="grid gap-4 sm:grid-cols-2">
+        </div>
+        <div className="flex flex-col gap-4">
+      <div className="grid gap-4 grid-cols-2">
         <SelectField label="Category" placeholder="Choose one" options={CATEGORIES} error={errors.category?.message} {...register("category")} />
         <SelectField label="Priority" options={PRIORITIES} error={errors.priority?.message} {...register("priority")} />
       </div>
@@ -95,6 +100,8 @@ export default function ComplaintForm({ onDone, onCancel }: ComplaintFormProps) 
         </div>
         <p className="text-caption text-mute">JPG, PNG or WEBP, up to 2 MB.</p>
         <input ref={fileRef} type="file" accept="image/jpeg,image/png,image/webp" className="hidden" onChange={pickImage} />
+      </div>
+        </div>
       </div>
       <div className="flex justify-end gap-2">
         <Button variant="secondary" onClick={onCancel} disabled={busy}>

@@ -35,6 +35,8 @@ export const registerSchema = z.object({
     .regex(PASSWORD_REGEX, "Use 8 to 64 characters with an uppercase, a lowercase, a number and a special character."),
 });
 
+export const profileSchema = registerSchema.pick({ fullName: true, mobile: true, flatNumber: true });
+
 export const loginSchema = z.object({
   email: z.preprocess(lowered, z.string().min(1, "Enter your email address.").max(100, "Email is too long.").email("Enter a valid email address.")),
   password: z.string().min(1, "Enter your password.").max(64, "Password is too long."),

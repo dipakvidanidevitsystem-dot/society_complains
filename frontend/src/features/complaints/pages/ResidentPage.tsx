@@ -35,8 +35,8 @@ export default function ResidentPage() {
       <ComplaintFilters params={params} onChange={patch} />
       <ComplaintList data={data} params={params} onPage={(page) => patch({ page })} emptyAction={newButton} />
 
-      <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="sm">
-        <div className="flex flex-col gap-4 bg-canvas p-6 sm:p-8">
+      <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="lg">
+        <div className="flex flex-col gap-4 bg-canvas p-6">
           <h2 className="text-heading font-semibold text-ink">Raise a complaint</h2>
           <ComplaintForm
             onCancel={() => setOpen(false)}

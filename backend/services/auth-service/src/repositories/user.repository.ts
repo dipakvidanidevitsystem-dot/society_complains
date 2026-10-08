@@ -20,6 +20,11 @@ export class UserRepository {
     return this.findById(result.insertId);
   }
 
+  async updateProfile(id: number, data: { fullName: string; mobile: string; flatNumber: string }) {
+    await db.update(users).set(data).where(eq(users.id, id));
+    return this.findById(id);
+  }
+
   async updateAvatar(id: number, avatarUrl: string) {
     await db.update(users).set({ avatarUrl }).where(eq(users.id, id));
     return this.findById(id);

@@ -39,6 +39,8 @@ export const registerSchema = z.object({
   password: z.string().regex(PASSWORD_REGEX, "Use 8 to 64 characters with an uppercase, a lowercase, a number and a special character."),
 });
 
+export const profileSchema = registerSchema.pick({ fullName: true, mobile: true, flatNumber: true });
+
 export const complaintSchema = z.object({
   title: trimmed.pipe(
     z.string().min(3, "Title must be at least 3 characters.").max(LIMITS.title, "Title can be up to 100 characters.").regex(TITLE_REGEX, "Title can only have letters, numbers and basic punctuation.")
@@ -56,6 +58,7 @@ export const commentSchema = z.object({
 
 export type LoginValues = z.input<typeof loginSchema>;
 export type RegisterValues = z.input<typeof registerSchema>;
+export type ProfileValues = z.input<typeof profileSchema>;
 export type ComplaintValues = z.input<typeof complaintSchema>;
 export type CommentValues = z.input<typeof commentSchema>;
 

@@ -11,4 +11,5 @@ authRouter.post("/login", controller.login);
 authRouter.post("/refresh", controller.refresh);
 authRouter.post("/logout", controller.logout);
 authRouter.get("/me", requireUser, controller.me);
+authRouter.patch("/profile", requireUser, controller.updateProfile);
 authRouter.patch("/avatar", requireUser, imageUpload.single("avatar"), controller.updateAvatar);

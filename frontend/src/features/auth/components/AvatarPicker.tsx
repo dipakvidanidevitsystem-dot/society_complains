@@ -9,17 +9,19 @@ import { checkImage } from "../../../utils/validation";
 
 interface AvatarPickerProps {
   file: File | null;
+  currentUrl?: string | null;
   onChange: (file: File | null) => void;
 }
 
-export default function AvatarPicker({ file, onChange }: AvatarPickerProps) {
+export default function AvatarPicker({ file, currentUrl, onChange }: AvatarPickerProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
   const [source, setSource] = useState<string | null>(null);
   const [crop, setCrop] = useState<PercentCrop | undefined>();
   const [pixelCrop, setPixelCrop] = useState<PixelCrop | undefined>();
 
-  const preview = useMemo(() => (file ? URL.createObjectURL(file) : null), [file]);
+  const picked = useMemo(() => (file ? URL.createObjectURL(file) : null), [file]);
+  const preview = picked ?? currentUrl ?? null;
 
   const pick = (e: ChangeEvent<HTMLInputElement>) => {
     const picked = e.target.files?.[0];
@@ -68,7 +70,7 @@ export default function AvatarPicker({ file, onChange }: AvatarPickerProps) {
         {preview ? <img src={preview} alt="Your profile" className="h-full w-full object-cover" /> : <PhotoCameraOutlinedIcon />}
       </button>
       <div className="flex flex-col gap-1">
-        <p className="text-small font-semibold text-ink">Profile photo (optional)</p>
+        <p className="text-small font-semibold text-ink">{currentUrl !== undefined ? "Profile photo" : "Profile photo (optional)"}</p>
         <p className="text-caption text-mute">JPG, PNG or WEBP, up to 2 MB.</p>
         {file && (
           <button type="button" onClick={() => onChange(null)} className="w-fit cursor-pointer text-caption font-semibold text-ink underline">

@@ -6,7 +6,7 @@ import Layout from "./components/Layout/Layout";
 import { NotFoundPage } from "./components/ErrorPages/ErrorPages";
 import { GuestRoute, HomeRedirect, ProtectedRoute } from "./components/RouteGuards/RouteGuards";
 import { Loader } from "./components/States/States";
-import { LoginPage, RegisterPage, useSessionLoader } from "./features/auth";
+import { LoginPage, ProfilePage, RegisterPage, useSessionLoader } from "./features/auth";
 import { AdminDashboardPage, ComplaintDetailPage, ResidentPage } from "./features/complaints";
 import { useAppSelector } from "./store/hooks";
 import type { ThemeMode } from "./store/themeSlice";
@@ -50,6 +50,7 @@ export default function App() {
             <Route element={<Layout />}>
               <Route path="/" element={<HomeRedirect />} />
               <Route path="/complaints/:id" element={<ComplaintDetailPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
               <Route element={<ProtectedRoute role="resident" />}>
                 <Route path="/my-complaints" element={<ResidentPage />} />
               </Route>

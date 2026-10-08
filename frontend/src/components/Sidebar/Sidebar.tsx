@@ -1,11 +1,14 @@
 import { NavLink } from "react-router-dom";
 import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
+import PersonOutlineIcon from "@mui/icons-material/PersonOutlined";
 import { useAppSelector } from "../../store/hooks";
 
+const profile = { to: "/profile", label: "My profile", icon: <PersonOutlineIcon fontSize="small" /> };
+
 const links = {
-  resident: [{ to: "/my-complaints", label: "My complaints", icon: <AssignmentOutlinedIcon fontSize="small" /> }],
-  admin: [{ to: "/admin", label: "All complaints", icon: <DashboardOutlinedIcon fontSize="small" /> }],
+  resident: [{ to: "/my-complaints", label: "My complaints", icon: <AssignmentOutlinedIcon fontSize="small" /> }, profile],
+  admin: [{ to: "/admin", label: "All complaints", icon: <DashboardOutlinedIcon fontSize="small" /> }, profile],
 };
 
 export default function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
